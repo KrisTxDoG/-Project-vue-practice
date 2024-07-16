@@ -17,10 +17,12 @@ export default {
   name: 'App',
   components: {
     // HelloWorld
+    
   },
   mounted() {
     const router = useRouter();
     router.push('/');
+    
   }
 }
 </script>

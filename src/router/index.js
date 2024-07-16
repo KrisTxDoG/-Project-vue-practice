@@ -4,6 +4,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import AboutPage from '../views/AboutPage.vue';
 import ContactPage from '../views/ContactPage.vue';
+import MapComponentPage from '@/views/MapComponentPage.vue';
+import AxiosPage from '@/views/AxiosPage.vue';
 
 const routes = [
   {
@@ -20,6 +22,16 @@ const routes = [
     path: '/contact',
     name: 'ContactPage',
     component: ContactPage
+  },
+  {
+    path: '/mapComponent',
+    name: 'MapComponentPage',
+    component: MapComponentPage
+  },
+  {
+    path: '/axios',
+    name: 'AxiosPage',
+    component: AxiosPage
   }
 ];
 

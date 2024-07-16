@@ -61,7 +61,20 @@
         </div>
       </div>
     </div>
-
+    <div class="container">
+      <div class="row">
+        <div class="col-5 mt-5">
+          <i class="bi bi-geo-alt-fill"></i>
+          <router-link class="fs-1 text-black text-decoration-none" to="/mapComponent">進入台灣地圖</router-link>
+          <br>
+          <router-link class="fs-1 text-black text-decoration-none" to="/axios">進入 axios 呼叫</router-link>
+        </div>
+        <div class="col-6">
+          <img src="image/山林瀑布.jpg" alt="">
+        </div>
+      </div>
+    </div>
+    
 
   </template>
   
