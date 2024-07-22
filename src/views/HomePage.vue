@@ -61,6 +61,12 @@
         </div>
       </div>
     </div>
+
+    <div>
+      <button class="btn btn-primary" v-if="isLoggedIn" @click="logout">Logout</button>
+      <p v-if="isLoggedIn">{{ user.name }}</p>
+    </div>
+
     <div class="container">
       <div class="row">
         <div class="col-5 mt-5">
@@ -69,7 +75,9 @@
           <br>
           <router-link class="fs-1 text-black text-decoration-none" to="/axios">進入 axios 呼叫</router-link>
           <br>
-          <router-link class="fs-1 text-black text-decoration-none" to="/login">註冊帳號</router-link>
+          <router-link class="fs-1 text-black text-decoration-none" to="/Account/Register">註冊帳號</router-link>
+          <br>
+          <router-link class="fs-1 text-black text-decoration-none" to="/Account/Login">登入頁面</router-link>
         </div>
         <div class="col-6">
           <img src="image/山林瀑布.jpg" alt="">
@@ -82,12 +90,32 @@
   
   <script>
   export default {
+
+    data() {
+      return {
+        isLoggedIn: !!localStorage.getItem('token'),
+
+        user: {
+          name: localStorage.getItem('userName')
+        }
+      }
+    },
+    methods: {
+      logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        this.isLoggedIn = false;
+        this.$router.push('/');
+      }
+    },
+
     name: 'HomePage',
     // 監聽路由路徑
     created() {
       console.log('HomePage created');
     }
   }
+
 
   </script>
   

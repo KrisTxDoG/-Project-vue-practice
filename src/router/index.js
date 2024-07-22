@@ -6,7 +6,8 @@ import AboutPage from '../views/AboutPage.vue';
 import ContactPage from '../views/ContactPage.vue';
 import MapComponentPage from '@/views/MapComponentPage.vue';
 import AxiosPage from '@/views/AxiosPage.vue';
-import LoginPage from '@/views/LoginPage.vue';
+import RegisterPage from '@/views/Account/RegisterPage.vue';
+import LoginPage from '@/views/Account/LoginPage.vue';
 
 const routes = [
   {
@@ -35,8 +36,13 @@ const routes = [
     component: AxiosPage
   },
   {
-    path: '/login',
-    name:'LoginPage',
+    path: '/Account/Register',
+    name:'RegisterPage',
+    component: RegisterPage
+  }, 
+  {
+    path: '/Account/Login',
+    name: 'LoginPage',
     component: LoginPage
   }
 ];
