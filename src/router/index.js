@@ -6,6 +6,7 @@ import AboutPage from '../views/AboutPage.vue';
 import ContactPage from '../views/ContactPage.vue';
 import MapComponentPage from '@/views/MapComponentPage.vue';
 import AxiosPage from '@/views/AxiosPage.vue';
+import LoginPage from '@/views/LoginPage.vue';
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
     path: '/axios',
     name: 'AxiosPage',
     component: AxiosPage
+  },
+  {
+    path: '/login',
+    name:'LoginPage',
+    component: LoginPage
   }
 ];
 
