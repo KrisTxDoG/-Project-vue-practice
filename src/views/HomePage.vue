@@ -85,20 +85,36 @@
       </div>
     </div>
     
+    <div class="user-dropdown-x">
+      <button @click="toggleDropdown" class="dropdown-toggle-x">
+        {{ user.name }}
+      </button>
+      <div v-if="dropdownVisible" class="dropdown-menu-x">
+        <router-link to="/Account/Register" class="dropdown-item-x">Profile</router-link>
+        <router-link to="/Account/Login" class="dropdown-item-x">Settings</router-link>
+        <button @click="logout" class="dropdown-item-x">Logout</button>
+        <h1>Hello</h1>
+      </div>
+    </div>
 
+    <br><br><br><br><br><br><br><br><br><br><br>
   </template>
   
   <script>
+
   export default {
 
+    
     data() {
       return {
         isLoggedIn: !!localStorage.getItem('token'),
 
         user: {
           name: localStorage.getItem('userName')
-        }
-      }
+        },
+
+        dropdownVisible: true,
+      };
     },
     methods: {
       logout() {
@@ -106,6 +122,10 @@
         localStorage.removeItem('userName');
         this.isLoggedIn = false;
         this.$router.push('/');
+      },
+
+      toggleDropdown() {
+        this.dropdownVisible = !this.dropdownVisible;
       }
     },
 
@@ -127,6 +147,36 @@
     color: white;
   }
 
+  .user-dropdown-x {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-toggle-x {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .dropdown-menu-x {
+    display: block;
+    position: absolute;
+    background-color: white;
+    box-sizing: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+
+  .dropdown-item-x {
+    padding: 10px;
+    cursor: pointer;
+    display: block;
+  }
+
+  .dropdown-item-x:hover {
+    background-color: #f1f1f1;
+  }
 
   </style>
   
