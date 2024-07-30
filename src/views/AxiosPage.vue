@@ -20,7 +20,9 @@
   </template>
   
   <script>
-  import axios from 'axios';
+  // import axios from 'axios';
+  import axiosInstance from '@/axios.js';
+  import { jwtDecode } from 'jwt-decode'; // 使用命名導出
   
   export default {
     name: "AxiosPage",
@@ -34,12 +36,28 @@
 
     mounted() {
         this.getItems();
+
+        const token = localStorage.getItem('token');
+        if (token) {
+          if (token.split('.').length === 3) { // 檢查 token 是否由三部分組成
+            try {
+              const decodedToken = jwtDecode(token); // 使用命名導出
+              console.log('Decoded Token:', decodedToken);
+            } catch (error) {
+              console.error('Error decoding token:', error);
+            }
+          } else {
+            console.error('Invalid token format: ', token);
+          }
+        } else {
+          console.log('No token found in localStorage.');
+        }
     },
 
     methods: {
       async fetchData(id) {
         try {
-          const response = await axios.get(`https://localhost:7243/api/Home/${id}`);
+          const response = await axiosInstance.get(`https://localhost:7243/api/Home/${id}`);
           this.data = response.data;
         } catch (error) {
           console.error(error);
@@ -48,7 +66,7 @@
 
       async getItems() {
       try {
-        const response = await axios.get('https://localhost:7243/api/Items');
+        const response = await axiosInstance.get('https://localhost:7243/api/Items');
         this.items = response.data;
       } catch (error) {
         console.error('Error fetching items:', error);

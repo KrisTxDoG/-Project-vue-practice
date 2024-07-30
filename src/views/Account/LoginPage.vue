@@ -29,7 +29,7 @@
 <script>
 import axios from 'axios';
 import { ref} from 'vue';
-
+import jwt_decode from 'jwt-decode'; // 默認導出
 
 export default {
     name: 'LoginPage',
@@ -54,6 +54,15 @@ export default {
 
                 // 儲存 userName 到vue當中
                 localStorage.setItem('userName', returnedUserName);
+
+                // 解碼 token 並顯示在控制台
+                try {
+                  const decodedToken = jwt_decode(token);
+                  console.log('Decoded Token:', decodedToken);
+                } catch (decodeError) {
+                  console.error('Error decoding token:', decodeError);
+                }
+
 
                 // 轉到主頁或其他受保護網頁
                 window.location.href = '/';
