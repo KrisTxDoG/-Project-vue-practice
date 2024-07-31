@@ -65,13 +65,13 @@
       },
 
       async getItems() {
-      try {
-        const response = await axiosInstance.get('https://localhost:7243/api/Items');
-        this.items = response.data;
-      } catch (error) {
-        console.error('Error fetching items:', error);
+        try {
+          const response = await axiosInstance.get('https://localhost:7243/api/Items');
+          this.items = response.data;
+        } catch (error) {
+          console.error('Error fetching items:', error);
+        }
       }
-    }
     },
   };
   </script>

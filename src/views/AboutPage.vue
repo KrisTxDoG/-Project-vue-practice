@@ -8,7 +8,7 @@
   <script>
   export default {
     name: 'AboutPage',
-    // 在这里你可以使用 router 对象，例如监听路由事件等
+    
     created() {
       console.log('AboutPage created');
     }

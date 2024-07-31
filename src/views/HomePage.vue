@@ -97,10 +97,20 @@
       </div>
     </div>
 
+
+    <br><br><br><br><br><br><br><br><br><br><br>
+
+    <div class="input-group">
+      <input class="form-control" type="file" @change="handleFileChange" />
+      <button class="btn btn-primary" @click="uploadImage">Upload</button>
+    </div>
+
     <br><br><br><br><br><br><br><br><br><br><br>
   </template>
   
   <script>
+
+import axiosInstance from '@/axios.js';
 
   export default {
 
@@ -114,6 +124,7 @@
         },
 
         dropdownVisible: true,
+        selectedFile: null,
       };
     },
     methods: {
@@ -126,7 +137,33 @@
 
       toggleDropdown() {
         this.dropdownVisible = !this.dropdownVisible;
-      }
+      },
+      
+      handleFileChange(event) {
+        this.selectedFile = event.target.files[0];
+      },
+
+      async uploadImage() {
+        if(!this.selectedFile) {
+          alert("請選擇檔案!");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', this.selectedFile);
+
+        try{
+          await axiosInstance.post('https://localhost:7243/api/Upload', formData, {
+            headers: {
+              'Context-type': 'multipart/form-data',
+            },
+          });
+          alert("上傳檔案成功~");
+        } catch(error) {
+          console.error('Error uploading file', error);
+          alert('檔案上傳失敗');
+        }
+      },
     },
 
     name: 'HomePage',
