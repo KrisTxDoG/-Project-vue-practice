@@ -104,8 +104,14 @@
       <input class="form-control" type="file" @change="handleFileChange" />
       <button class="btn btn-primary" @click="uploadImage">Upload</button>
     </div>
+    {{ uploadedFileName }}
 
     <br><br><br><br><br><br><br><br><br><br><br>
+
+
+    <div>
+      <button @click="downloadFile">Download</button>
+    </div>
   </template>
   
   <script>
@@ -125,6 +131,7 @@ import axiosInstance from '@/axios.js';
 
         dropdownVisible: true,
         selectedFile: null,
+        uploadedFileName: ''
       };
     },
     methods: {
@@ -153,17 +160,41 @@ import axiosInstance from '@/axios.js';
         formData.append('file', this.selectedFile);
 
         try{
-          await axiosInstance.post('https://localhost:7243/api/Upload', formData, {
+          const response =  await axiosInstance.post('https://localhost:7243/api/Upload', formData, {
             headers: {
               'Context-type': 'multipart/form-data',
             },
           });
+          this.uploadedFileName = response.data.filePath.split('\\').pop();
           alert("上傳檔案成功~");
         } catch(error) {
           console.error('Error uploading file', error);
           alert('檔案上傳失敗');
         }
       },
+
+      // 下載呼叫按鈕
+      async downloadFile() {
+        if(!this.uploadedFileName) {
+          alert('沒有找到相關的檔案名稱')
+          return;
+        }
+
+        try{
+          const response = await axiosInstance.get(`https://localhost:7243/api/Upload/download/${this.uploadedFileName}`, {
+            responseType: 'blob'
+          });
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', this.uploadedFileName);
+          document.body.appendChild(link);
+          link.click();
+        }catch(error) {
+          console.error('出現錯誤', error);
+          alert('下載檔案失敗');
+        }
+      }
     },
 
     name: 'HomePage',
