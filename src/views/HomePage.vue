@@ -33,6 +33,15 @@
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+            <div class="d-flex">
+              <button class="btn btn-outline-success" v-if="isLoggedIn" @click="logout">Logout</button>
+            </div>
+            <div v-if="!isLoggedIn" class="ms-1">
+              <router-link class="form-control btn btn-outline-success m-5 me-0 ms-1" to="/Account/Login">登入帳號</router-link>
+            </div>
+            <div v-if="!isLoggedIn" class="ms-1">
+              <router-link class="form-control btn btn-outline-success m-5 me-0 ms-1" to="/Account/Register">註冊帳號</router-link>
+            </div>
           </div>
         </div>
       </nav>
@@ -62,22 +71,38 @@
       </div>
     </div>
 
-    <div>
+    <!-- <div>
       <button class="btn btn-primary" v-if="isLoggedIn" @click="logout">Logout</button>
       <p v-if="isLoggedIn">{{ user.name }}</p>
-    </div>
+    </div> -->
 
     <div class="container">
       <div class="row">
         <div class="col-5 mt-5">
           <i class="bi bi-geo-alt-fill"></i>
-          <router-link class="fs-1 text-black text-decoration-none" to="/mapComponent">進入台灣地圖</router-link>
+          <router-link class="fs-1 text-black text-decoration-none" to="/mapComponent">
+            <h4 class="bg-primary rounded text-white">
+              進入台灣地圖
+            </h4>
+          </router-link>
+          <p>歡迎來到測試資料區, 在這邊可以點擊地圖進入到詳細資料當中</p>
           <br>
-          <router-link class="fs-1 text-black text-decoration-none" to="/axios">進入 axios 呼叫</router-link>
+          <router-link class="fs-1 text-black text-decoration-none" to="/axios">
+            <h4 class="bg-primary rounded text-white">
+              進入 axios 呼叫
+            </h4>
+          </router-link>
+          <p>點擊此處進去 axios 呼叫區域</p>
           <br>
-          <router-link class="fs-1 text-black text-decoration-none" to="/Account/Register">註冊帳號</router-link>
+          <router-link class="fs-1 text-black text-decoration-none" to="/axios">
+            <h4 class="bg-primary rounded text-white">
+              進入檔案上傳頁面
+            </h4>
+          </router-link>
+          <p>測試檔案上傳功能</p>
+          <!-- <router-link class="fs-1 text-black text-decoration-none" to="/Account/Register">註冊帳號</router-link> -->
           <br>
-          <router-link class="fs-1 text-black text-decoration-none" to="/Account/Login">登入頁面</router-link>
+          <!-- <router-link class="fs-1 text-black text-decoration-none" to="/Account/Login">登入頁面</router-link> -->
         </div>
         <div class="col-6">
           <img src="image/山林瀑布.jpg" alt="">
@@ -85,7 +110,7 @@
       </div>
     </div>
     
-    <div class="user-dropdown-x">
+    <!-- <div class="user-dropdown-x">
       <button @click="toggleDropdown" class="dropdown-toggle-x">
         {{ user.name }}
       </button>
@@ -95,10 +120,8 @@
         <button @click="logout" class="dropdown-item-x">Logout</button>
         <h1>Hello</h1>
       </div>
-    </div>
+    </div> -->
 
-
-    <br><br><br><br><br><br><br><br><br><br><br>
 
     <div class="input-group">
       <input class="form-control" type="file" @change="handleFileChange" />
