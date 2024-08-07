@@ -6,6 +6,7 @@
     
     <button class="map-button-1 btn btn-danger" @click="addAtmosphereTileLayer">新增氣象圖層</button>
 
+    <!-- 側邊攔位 HTML 區域 -->
     <div id="sidebar" class="leaflet-sidebar collapsed">
       <div class="leaflet-sidebar-tabs">
         <ul role="tablist">
@@ -97,6 +98,9 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-sidebar-v2/css/leaflet-sidebar.css';
 import 'leaflet-sidebar-v2';
+import 'leaflet-draw';
+import 'leaflet-draw/dist/leaflet.draw.css'
+import { featureGroup } from 'leaflet';
 
 export default {
   name: 'MapComponentPage',
@@ -104,10 +108,14 @@ export default {
     const map = ref(null);
     const currentTileLayer = ref(null);
 
+    // 加入初始繪圖
+    const drawItems = ref(null);
+
     onMounted(() => {
       initMap();
     });
 
+    // 初始化地圖
     const initMap = () => {
       map.value = L.map('map').setView([24.91, 121.673], 13);
 
@@ -118,6 +126,43 @@ export default {
 
       currentTileLayer.value = defaultTileLayer;
 
+      // 初始化繪圖控制器
+      drawItems.value = new L.FeatureGroup();
+      map.value.addLayer(drawItems.value);
+
+      const drawControl = new L.Control.Draw({
+        edit: {
+          featureGroup: drawItems.value
+        },
+        draw: {
+          polygon: {
+            allowIntersection: false,
+            showArea: true
+          },
+          polyline: true,
+          circle: false,
+          rectangle: true,
+          marker: false
+        }
+      });
+      map.value.addControl(drawControl);
+
+       // 處理繪製完成的事件
+       map.value.on(L.Draw.Event.CREATED, function (event) {
+        const layer = event.layer;
+        drawnItems.value.addLayer(layer);
+        // 計算測量結果
+        if (event.layerType === 'polyline') {
+          const length = L.GeometryUtil.length(layer);
+          alert("Length: " + length + " meters");
+        } else if (event.layerType === 'polygon' || event.layerType === 'rectangle') {
+          const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+          alert("Area: " + area + " square meters");
+        }
+      });
+    
+
+      // 側邊欄位控制器
       const sidebar = L.control.sidebar({
         autopan: true,
         closeButton: true,
@@ -128,6 +173,8 @@ export default {
       sidebar.open('home');
     };
 
+
+    // 點選後回復到 openstreetmap 的地圖
     const addInitMap = () => {
       if (map.value && currentTileLayer.value) {
         map.value.removeLayer(currentTileLayer.value);
@@ -139,6 +186,7 @@ export default {
       currentTileLayer.value = tileInit;
     }
 
+    // 點選後進入到國土測繪中心的地圖
     const addTileLayer = () => {
       if (map.value && currentTileLayer.value) {
         map.value.removeLayer(currentTileLayer.value);
@@ -152,6 +200,7 @@ export default {
       currentTileLayer.value = tileLayer1;
     };
 
+    // 點選後進入到氣象局的地圖
     const addAtmosphereTileLayer = () => {
       if (map.value && currentTileLayer.value) {
         map.value.removeLayer(currentTileLayer.value);
@@ -165,6 +214,11 @@ export default {
       currentTileLayer.value = tileLayer2;
     };
 
+
+    
+
+    // 
+
     return {
       addInitMap,
       addTileLayer,
@@ -173,6 +227,11 @@ export default {
   }
 };
 </script>
+
+<!-- <style>
+@import '@/leaflet/dist/leaflet.css';
+@import '@/leaflet-draw/dist/leaflet.draw.css';
+</style> -->
 
 <!-- <style>
 #map {
