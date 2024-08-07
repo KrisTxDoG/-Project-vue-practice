@@ -51,10 +51,39 @@
             </div>
           </div>
 
+          <div class="content-box mt-2">
+            <div class="accordion" id="accordionLayer">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="LayerTwoButton">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#LayerTwo" aria-expanded="true" aria-controls="LayerTwo">
+                    加入圖層
+                  </button>
+                </h2>
+                <div id="LayerTwo" class="accordion-collapse collapse show" aria-labelledby="LayerTwoButton">
+                  <div class="accordion-body">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="MapController" :id="'Krist-1'" :value="'Krist-1'" @click="addInitMap">
+                      <label class="form-check-label" :for="'Krist-1'">原始地圖</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="MapController" :id="'Krist-1'" :value="'Krist-1'" @click="addTileLayer">
+                      <label class="form-check-label" :for="'Krist-1'">衛星雲圖</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="MapController" :id="'Krist-2'" :value="'Krist-2'" @click="addAtmosphereTileLayer">
+                      <label class="form-check-label" :for="'Krist-2'">經建版地圖</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
+<!-- 
           <button class="map-button btn btn-danger" @click="addTileLayer">新增國土圖層</button>
     
-          <button class="map-button-1 btn btn-danger" @click="addAtmosphereTileLayer">新增氣象圖層</button>
+          <button class="map-button-1 btn btn-danger" @click="addAtmosphereTileLayer">新增氣象圖層</button> -->
 
         </div>
       </div>
@@ -99,6 +128,17 @@ export default {
       sidebar.open('home');
     };
 
+    const addInitMap = () => {
+      if (map.value && currentTileLayer.value) {
+        map.value.removeLayer(currentTileLayer.value);
+      }
+      const tileInit = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map.value);
+
+      currentTileLayer.value = tileInit;
+    }
+
     const addTileLayer = () => {
       if (map.value && currentTileLayer.value) {
         map.value.removeLayer(currentTileLayer.value);
@@ -126,6 +166,7 @@ export default {
     };
 
     return {
+      addInitMap,
       addTileLayer,
       addAtmosphereTileLayer,
     };
