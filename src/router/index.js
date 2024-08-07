@@ -8,6 +8,7 @@ import MapComponentPage from '@/views/MapComponentPage.vue';
 import AxiosPage from '@/views/AxiosPage.vue';
 import RegisterPage from '@/views/Account/RegisterPage.vue';
 import LoginPage from '@/views/Account/LoginPage.vue';
+import FileUploadPage from '@/views/FileUploadPage.vue';
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
     path: '/Account/Login',
     name: 'LoginPage',
     component: LoginPage
+  },
+  {
+    path: '/FileUpload',
+    name: 'FileUploadPage',
+    component: FileUploadPage
   }
 ];
 

@@ -94,7 +94,7 @@
           </router-link>
           <p>點擊此處進去 axios 呼叫區域</p>
           <br>
-          <router-link class="fs-1 text-black text-decoration-none" to="/axios">
+          <router-link class="fs-1 text-black text-decoration-none" to="/FileUpload">
             <h4 class="bg-primary rounded text-white">
               進入檔案上傳頁面
             </h4>
@@ -123,21 +123,18 @@
     </div> -->
 
 
-    <div class="input-group">
+    <!-- <div class="input-group">
       <input class="form-control" type="file" @change="handleFileChange" />
       <button class="btn btn-primary" @click="uploadImage">Upload</button>
     </div>
-    {{ uploadedFileName }}
+    {{ uploadedFileName }} -->
 
     <br><br><br><br><br><br><br><br><br><br><br>
 
 
-    <div>
-      <button @click="downloadFile">Download</button>
-    </div>
   </template>
   
-  <script>
+<script>
 
 import axiosInstance from '@/axios.js';
 
