@@ -99,8 +99,8 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-sidebar-v2/css/leaflet-sidebar.css';
 import 'leaflet-sidebar-v2';
 import 'leaflet-draw';
-import 'leaflet-draw/dist/leaflet.draw.css'
-import { featureGroup } from 'leaflet';
+import 'leaflet-draw/dist/leaflet.draw.css';
+import 'leaflet-geometryutil'; 
 
 export default {
   name: 'MapComponentPage',
@@ -109,10 +109,11 @@ export default {
     const currentTileLayer = ref(null);
 
     // 加入初始繪圖
-    const drawItems = ref(null);
+    const drawItems = ref(new L.FeatureGroup());
 
     onMounted(() => {
       initMap();
+      // setupDrawEvents();
     });
 
     // 初始化地圖
@@ -142,23 +143,48 @@ export default {
           polyline: true,
           circle: false,
           rectangle: true,
-          marker: false
+          marker: true,
         }
       });
       map.value.addControl(drawControl);
 
+      // 添加初始標記
+      const initialMarker = L.marker([24.91, 121.673]).addTo(map.value)
+        .bindPopup('初始標記')
+        .openPopup()
+      drawItems.value.addLayer(initialMarker);
+
        // 處理繪製完成的事件
-       map.value.on(L.Draw.Event.CREATED, function (event) {
-        const layer = event.layer;
-        drawnItems.value.addLayer(layer);
-        // 計算測量結果
-        if (event.layerType === 'polyline') {
-          const length = L.GeometryUtil.length(layer);
-          alert("Length: " + length + " meters");
-        } else if (event.layerType === 'polygon' || event.layerType === 'rectangle') {
-          const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-          alert("Area: " + area + " square meters");
-        }
+      //  map.value.on(L.Draw.Event.CREATED, function (event) {
+      //   const layer = event.layer;
+      //   drawItems.value.addLayer(layer);
+
+
+      //   console.log(drawItems.value)
+      //   // Debugging logs
+      //   console.log('Layer Type:', event.layerType);
+      //   console.log('Layer LatLngs:', layer.getLatLngs());
+
+      //   // 計算測量結果
+      //   if (event.layerType === 'polyline') {
+      //     const latLngs = layer.getLatLngs();
+      //     if(latLngs.length > 0) {
+      //       const length = L.GeometryUtil.length(layer);
+      //       alert("Length: " + length + " meters");
+      //     }
+      //   } else if (event.layerType === 'polygon' || event.layerType === 'rectangle') {
+      //     const latlngs = layer.getLatLngs()[0];
+      //     if(latlngs.length > 0) {
+      //       const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+      //       alert("Area: " + area + " square meters");
+      //     }
+      //   }
+      // });
+
+      map.value.on("draw:created", function (e) {
+        const layer = e.layer;
+        map.value.addLayer(layer);
+        console.log(e);
       });
     
 
@@ -172,6 +198,33 @@ export default {
 
       sidebar.open('home');
     };
+
+     // 設置繪圖事件
+    //  const setupDrawEvents = () => {
+    //   map.value.on(L.Draw.Event.CREATED, function (event) {
+    //     const layer = event.layer;
+    //     drawItems.value.addLayer(layer);
+
+    //     // Debugging logs
+    //     console.log('Layer Type:', event.layerType);
+    //     console.log('Layer LatLngs:', layer.getLatLngs());
+
+    //     // 計算測量結果
+    //     if (event.layerType === 'polyline') {
+    //       const latLngs = layer.getLatLngs();
+    //       if (latLngs.length > 0) {
+    //         const length = L.GeometryUtil.length(layer);
+    //         alert("Length: " + length + " meters");
+    //       }
+    //     } else if (event.layerType === 'polygon' || event.layerType === 'rectangle') {
+    //       const latlngs = layer.getLatLngs()[0];
+    //       if (latlngs.length > 0) {
+    //         const area = L.GeometryUtil.geodesicArea(latlngs);
+    //         alert("Area: " + area + " square meters");
+    //       }
+    //     }
+    //   });
+    // };
 
 
     // 點選後回復到 openstreetmap 的地圖
@@ -214,11 +267,6 @@ export default {
       currentTileLayer.value = tileLayer2;
     };
 
-
-    
-
-    // 
-
     return {
       addInitMap,
       addTileLayer,
@@ -227,6 +275,7 @@ export default {
   }
 };
 </script>
+
 
 <!-- <style>
 @import '@/leaflet/dist/leaflet.css';
