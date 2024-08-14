@@ -97,6 +97,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-sidebar-v2/css/leaflet-sidebar.css';
 import 'leaflet-sidebar-v2';
+import 'leaflet-measure/dist/leaflet-measure.css';
+import 'leaflet-measure';
 
 export default {
   name: 'MapComponentPage',
@@ -118,6 +120,16 @@ export default {
 
       currentTileLayer.value = defaultTileLayer;
 
+      // 添加測量工具, 但因為會出錯誤所以沒有使用
+      // const measureControl = new L.Control.Measure({
+      //   primaryLengthUnit: 'meters',
+      //   primaryAreaUnit: 'sqmeters',
+      //   activeColor: '#ABE67E',
+      //   completedColor: '#C8F2BE'
+      // });
+      // map.value.addControl(measureControl);
+
+      // 添加側邊欄位顯示
       const sidebar = L.control.sidebar({
         autopan: true,
         closeButton: true,

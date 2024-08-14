@@ -103,6 +103,13 @@
           <!-- <router-link class="fs-1 text-black text-decoration-none" to="/Account/Register">註冊帳號</router-link> -->
           <br>
           <!-- <router-link class="fs-1 text-black text-decoration-none" to="/Account/Login">登入頁面</router-link> -->
+          <router-link class="fs-1 text-black text-decoration-none" to="/Backstage/BackstageControl">
+            <h4 class="bg-primary rounded text-white">
+              進入後臺系統
+            </h4>
+          </router-link>
+          <p>歡迎來到測試資料區, 在這邊可以點擊地圖進入到詳細資料當中</p>
+          <br>
         </div>
         <div class="col-6">
           <img src="image/山林瀑布.jpg" alt="">
