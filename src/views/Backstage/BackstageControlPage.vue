@@ -45,7 +45,10 @@
     data() {
         return {
             items: [], // 負責存放後端獲取的資料
+
+            // 新增表單資料放在這邊
             currentItem: {
+                id: null,
                 name: '',
                 phone: ''
             }
@@ -72,7 +75,18 @@
         // 處理表單提交
         async handleSubmit() {
             try{
-                await this.createItem();
+
+                // 若表單當中 id 為 null 的時候需要刪除 currentIem.id 讓後端自動生成
+                if (this.currentItem.id === null || this.currentItem.id === undefined) {
+                    // 確保 id 為 null 或不包含在請求中
+                    delete this.currentItem.id;
+                }
+
+                if(this.currentItem.id) {
+                    await this.updateItem();
+                } else {
+                    await this.createItem();
+                }
                 this.getItem(); // 更新清單
                 Swal.close();   // 關閉彈跳視窗
             } catch (error){
@@ -96,6 +110,21 @@
             this.showModel('Create New Item');
         },
 
+        // 修改資料開啟
+        editItem(item) {
+            this.currentItem = { ...item };
+            this.showModel('Edit item');
+        },
+
+        // 更新後端資料
+        async updateItem() {
+            try {
+                await axiosInstance.put("https://localhost:7243/api/Backstage/UpdateItem", this.currentItem);
+            } catch (error) {
+                console.error('Error updateing item', error);
+            }
+        },
+
         // 刪除後端資料
         async deleteItem(id) {
             try {
@@ -109,6 +138,7 @@
         // 重製表單
         resetForm() {
             this.currentItem = {
+                id: null,
                 name: '',
                 phone: ''
             }
@@ -121,11 +151,11 @@
                 html: `
                     <div>
                         <label for="name">Name:</label>
-                        <input id="name" type="text" class="swal2-input" v-model="currentItem.name" />
+                        <input id="name" type="text" class="swal2-input"  value="${this.currentItem.name || ''}"/>
                     </div>
                     <div>
                         <label for="phone">Phone:</label>
-                        <input id="phone" type="phone" class="swal2-input" v-model="currentItem.price" />
+                        <input id="phone" type="phone" class="swal2-input"  value="${this.currentItem.phone || ''}"/>
                     </div>
                 `,
                 focusConfirm: false,
