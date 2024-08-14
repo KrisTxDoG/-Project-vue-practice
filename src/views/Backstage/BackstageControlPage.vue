@@ -27,7 +27,7 @@
                 <td>{{ item.phone }}</td>
                 <td>
                     <button class="btn btn-primary me-2" @click="editItem(item)">Edit</button>
-                    <button class="btn btn-danger" @click="deleteItem(item,id)">Delete</button>
+                    <button class="btn btn-danger" @click="deleteItem(item.id)">Delete</button>
                 </td>
             </tr>
         </tbody>
@@ -94,6 +94,16 @@
         openCreateModal() {
             this.resetForm();
             this.showModel('Create New Item');
+        },
+
+        // 刪除後端資料
+        async deleteItem(id) {
+            try {
+                await axiosInstance.delete(`https://localhost:7243/api/Backstage/DeleteItem/${id}`);
+                this.getItem(); // 刪除後更新表單
+            } catch(error) {
+                console.log('Error deleting item', error);
+            }
         },
         
         // 重製表單
