@@ -32,6 +32,22 @@
             </tr>
         </tbody>
       </table>
+
+      <div class="pagination d-flex justify-content-center">
+            <button class="btn btn-primary"
+                :disabled="currentPage === 1" 
+                @click="changePage(currentPage - 1)">
+                Previous
+            </button>
+
+            <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+
+            <button class="btn btn-primary"
+                :disabled="currentPage === Math.ceil(totalItems / pageSize)" 
+                @click="changePage(currentPage + 1)">
+                Next
+            </button>
+        </div>
     </div>
   </template>
   
@@ -46,6 +62,10 @@
         return {
             items: [], // 負責存放後端獲取的資料
 
+            currentPage: 1, // 當前頁碼
+            pageSize: 10,   // 每頁顯示的項目數
+            totalItems: 0,   // 總項目數
+
             // 新增表單資料放在這邊
             currentItem: {
                 id: null,
@@ -56,20 +76,32 @@
     },
 
     mounted() {
-        this.getItem();
+        this.getItem(this.currentPage);
     },
 
     methods: {
     
         // 取得所有資料列表
-        async getItem() {
+        async getItem(page) {
             try {
-                const response = await axiosInstance.get("https://localhost:7243/api/Backstage");
-                this.items = response.data;
+                const response = await axiosInstance.get("https://localhost:7243/api/Backstage", {
+                    params: {
+                        page: page,
+                        pageSize: this.pageSize
+                    }
+                });
+                this.items = response.data.items;
+                this.totalItems = response.data.totalItems;
                 console.log(this.items)
             } catch (error) {
                 console.log("Error fetching items", error);
             }
+        },
+
+        // 改變頁數的時候
+        changePage(page) {
+            this.currentPage = page;
+            this.getItem(this.currentPage);
         },
 
         // 處理表單提交
