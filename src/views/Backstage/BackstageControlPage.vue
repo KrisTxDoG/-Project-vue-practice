@@ -11,6 +11,20 @@
         </div>
       </div>
 
+      <div class="container mt-3">
+        <div class="row">
+            <div>
+                <input
+                    type="text"
+                    class="form-control"
+                    v-model="searchQuery"
+                    placeholder="輸入姓名搜尋"
+                    @input="getItem(currentPage)"
+                >
+            </div>
+        </div>
+      </div>
+
       <table class="table">
         <thead>
             <tr>
@@ -65,6 +79,7 @@
             currentPage: 1, // 當前頁碼
             pageSize: 10,   // 每頁顯示的項目數
             totalItems: 0,   // 總項目數
+            searchQuery:'',
 
             // 新增表單資料放在這邊
             currentItem: {
@@ -87,7 +102,8 @@
                 const response = await axiosInstance.get("https://localhost:7243/api/Backstage", {
                     params: {
                         page: page,
-                        pageSize: this.pageSize
+                        pageSize: this.pageSize,
+                        search: this.searchQuery // 傳遞 searchQuery參數
                     }
                 });
                 this.items = response.data.items;
